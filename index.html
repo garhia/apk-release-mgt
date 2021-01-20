@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header>
+        <h1 id="htag">Garhia APKS</h1>
+    </header>
+    <main id="home" class="main-display">
+        <div class="home-container">
+            <div class="board">
+                Wholesaler
+            </div>
+            <div class="board">
+                Retailer
+            </div>
+        </div>
+    </main>
+    <main id="apps" class="main-display">
+        <div>
+            <h3> Production APK
+                <hr class="little-line" />
+            </h3>
+            <div class="single-container">
+                <div id="p-apk"></div>
+            </div>
+        </div>
+        <div>
+            <h3> Test APK
+                <hr class="little-line" />
+            </h3>
+            <div class="single-container">
+                <div id="t-apk"></div>
+            </div>
+        </div>
+        <div>
+            <h3> Feature Or Bug Fix APK
+                <hr class="little-line" />
+            </h3>
+            <div id="f-b-apk"></div>
+        </div>
+        <button class="add-btn" onclick="openAddAPKModal()"><img src="./images/add-button.svg" /> </button>
+
+        <div class="modal" id="addAPKModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form>
+                    <label>Title</label> <br />
+                    <input id="apk-title" type="text" name="title" required /><br />
+                    <label>APK</label><br />
+                    <input id="apk_file" type="file" name="apk_file" required /><br />
+                    <label> Bug Document Link</label><br />
+                    <input id="bugsLink" type="text" name="bugsLink" required /><br />
+                    <label> Tested Document Link</label><br />
+                    <input id="testLink" type="text" name="testedLink" required /><br />
+                    <button onclick="submitApk()" type="button">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="modal" id="searchModal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id="apk-search"> </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+    <script>
+        let appType = '';
+        const openAddAPKModal = () => {
+            const modal = document.getElementById('addAPKModal');
+            modal.style.display = 'block';
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        const openSearchModal = (list) => {
+            const modal = document.getElementById('searchModal');
+            modal.style.display = 'block';
+            const theContent = document.getElementById('apk-search');
+            if (!list) return;
+            for (let i = list.length - 1; i >= 0; i--) {
+                const p = document.createElement('p');
+                const download = document.createElement('a');
+                download.href = list[i].link;
+                download.innerHTML = 'Download';
+                const title = document.createElement('span');
+                title.innerHTML = list[i].title;
+                title.classList.add('list-text');
+                p.appendChild(download);
+                p.appendChild(title);
+                theContent.appendChild(p);
+            }
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+        const getApks = async () => {
+            const url = `https://garhia-apk.herokuapp.com/apk?appType=${appType}`;
+            const result = await fetch(url);
+            const data = await result.json();
+            return data;
+        }
+
+        const submitApk = (e) => {
+            const title = document.getElementById('apk-title').value;
+            const apkfile = document.getElementById('apk_file').files[0];
+            const bugslink = document.getElementById('bugsLink').value;
+            const testedlink = document.getElementById('testLink').value;
+
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('apk_file', apkfile);
+            formData.append('bugsLink', bugslink);
+            formData.append('testedLink', testedlink);
+            formData.append('appType', appType);
+            fetch('https://garhia-apk.herokuapp.com/apk', { method: "POST", body: formData }).then(data => data.json())
+                .then(data => { console.log(data); });
+            return;
+        }
+
+        const moveUp = (tag, id) => {
+            console.log(id);
+            if (tag === 'testing') {
+                fetch(
+                    'https://garhia-apk.herokuapp.com/apk/transfer-to-production',
+                    {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ appType }),
+                    }).then(data => data.json())
+                    .then(data => { console.log(data); location.reload(); }).catch(e => console.log(e));
+            }
+            else {
+                fetch(
+                    'https://garhia-apk.herokuapp.com/apk/transfer-to-test',
+                    {
+                        method: "POST",
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id, appType })
+                    }).then(data => data.json())
+                    .then(data => { console.log(data); location.reload(); }).catch(e => console.log(e));
+            }
+        }
+
+        const getAPKContainer = (apk) => {
+            if (!apk.links || !apk.links.length) return document.createElement('div');
+
+            const link = apk.links[apk.links.length - 1];
+            const container = document.createElement('div');
+            container.classList.add('apk-container');
+            const title = document.createElement('h4');
+            title.innerHTML = apk.title;
+            container.appendChild(title);
+            const apkImg = document.createElement('img');
+            apkImg.src = './images/apk.svg';
+            apkImg.classList.add('apk-image');
+            const lowerP = document.createElement('p');
+            lowerP.classList.add('lower-p');
+            const bugLink = document.createElement('a');
+            bugLink.innerHTML = 'Bug Document';
+            bugLink.href = link.bugsLink;
+            bugLink.target = "_blank";
+            bugLink.classList.add('bug-link');
+
+            const testedLink = document.createElement('a');
+            testedLink.innerHTML = 'Tested Document';
+            testedLink.href = link.testedLink;
+            testedLink.target = "_blank";
+            testedLink.classList.add('test-link');
+
+            const downloadBtn = document.createElement('img');
+            downloadBtn.src = './images/download.svg'
+            downloadBtn.classList.add('apk-download-btn');
+
+            const dl = document.createElement('a');
+            dl.href = link.link;
+            dl.target = "_blank";
+            dl.appendChild(downloadBtn);
+
+            lowerP.appendChild(bugLink);
+            lowerP.appendChild(dl);
+            lowerP.appendChild(testedLink);
+
+            if (apk.tag === 'feature/bug-fix' || apk.tag === 'testing') {
+                const moveTo = document.createElement('button');
+                moveTo.classList.add('move-up');
+                moveTo.addEventListener('click', () => {
+                    moveUp(apk.tag, apk._id);
+                })
+                container.appendChild(moveTo);
+            }
+
+            if (apk.tag === 'production' || apk.tag === 'testing') {
+                const search = document.createElement('button');
+                search.classList.add('search');
+                search.addEventListener('click', () => {
+                    openSearchModal(apk.links);
+                })
+                container.appendChild(search);
+            }
+            container.appendChild(apkImg);
+            container.appendChild(lowerP);
+            return container;
+        }
+
+        const displayProduction = (apks) => {
+            const production = document.getElementById('p-apk');
+            const pApk = apks.find(x => x._id === 'production');
+            if (!pApk) return;
+            production.appendChild(getAPKContainer(pApk.apks[0]));
+        }
+
+        const disPlayTest = (apks) => {
+            const test = document.getElementById('t-apk');
+            const tApk = apks.find(x => x._id === 'testing');
+            if (!tApk) return;
+            test.appendChild(getAPKContainer(tApk.apks[0]));
+        }
+
+        const dislayFeatures = (apks) => {
+            const feature = document.getElementById('f-b-apk');
+            const fbApk = apks.find(x => x._id === 'feature/bug-fix');
+            if (!fbApk) return;
+            fbApk.apks.forEach(apk => {
+                feature.appendChild(getAPKContainer(apk));
+            });
+        }
+
+        const displayAPKS = () => {
+            getApks().then(apks => {
+                console.log(apks);
+                displayProduction(apks);
+                disPlayTest(apks);
+                dislayFeatures(apks);
+
+            })
+        }
+
+        const displsyMain = () => {
+            const url_string = window.location.href;
+            const url = new URL(url_string);
+            const app = url.searchParams.get("app");
+            if(!app || (app !== 'Wholesaler' && app !== 'Retailer')) {
+                document.getElementById("home").style.display = 'block';
+                if(url_string.split('?').length > 1) {
+                    alert('You need to specify a valid app type');
+                    window.location.href = url_string.split('?')[0];
+                }
+                const boards = document.getElementsByClassName('board');
+                for(let i = 0; i < boards.length; i++) {
+                    boards[i].addEventListener('click', () => {
+                        window.location.href = window.location.href  + `?app=${boards[i].innerHTML.trim()}`
+                    });
+                }
+            }
+            else {
+                document.getElementById('apps').style.display = 'block'
+                appType = app;
+                document.getElementById('htag').innerHTML += ` - ${app}`
+                displayAPKS();
+            } 
+
+        }
+        displsyMain();
+    </script>
+</body>
+
+</html>

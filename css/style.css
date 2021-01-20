@@ -1,0 +1,176 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background: url("../images/bg.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    min-height: 100vh; 
+}
+.main-display{
+    display: none;
+}
+
+.home-container{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.board {
+    cursor: pointer;
+    min-width: 400px;
+    height: 200px;
+    background-color: #888;
+    color: white;
+    width: 40%;
+    margin-top: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.board:active {
+    width: 39%;
+}
+
+header {
+    background-color: #f6f6f6;
+    text-align: center;
+    height: 50px;
+}
+
+h3 {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.single-container {
+    width: 400px;
+    margin: 0 auto;
+}
+.little-line{
+    width: 150px;
+    margin: auto;
+}
+.apk-image {
+    height: 200px;
+    width: 200px;
+}
+
+.apk-container {
+    position: relative;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+    width: 400px;
+    height: 300px;
+}
+
+.apk-download-btn {
+    cursor: pointer;
+    height: 70px;
+    color: green;
+}
+
+.bug-link {
+    color: red;
+    float: left;
+}
+
+.test-link {
+    color: green;
+    float: right;
+}
+
+.lower-p {
+    padding: 10px;
+}
+
+.add-btn {
+    border: none;
+    position: fixed;
+    height: 40px;
+    width: 40px;
+    right: 20px;
+    bottom: 10px;
+    cursor: pointer;
+}
+
+#f-b-apk {
+    display: flex;
+    align-self: auto;
+    justify-content: space-evenly;
+}
+
+.move-up {
+    position: absolute;
+    background-image: url('../images/up.svg');
+    top: 0;
+    right: -30px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: green;
+}
+
+.search {
+    position: absolute;
+    background-image: url('../images/search.svg');
+    top: 40px;
+    right: -30px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: green;
+}
+
+.list-text {
+    display: inline-block;
+    margin-left: 20px;
+    font-weight: 17px;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
