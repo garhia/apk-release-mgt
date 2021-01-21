@@ -124,16 +124,20 @@
         const submitApk = (e) => {
             const title = document.getElementById('apk-title').value;
             const link = document.getElementById('link').value;
-            const bugslink = document.getElementById('bugsLink').value;
-            const testedlink = document.getElementById('testLink').value;
+            const bugsLink = document.getElementById('bugsLink').value;
+            const testedLink = document.getElementById('testLink').value;
 
             const body = {
-                title, bugslink, testedlink, link,
+                title, bugsLink, testedLink, link, appType,
             }
-            fetch('https://garhia-apk.herokuapp.com/apk', { method: "POST", body: JSON.stringify(body) }).then(response => {
+            fetch('https://garhia-apk.herokuapp.com/apk', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body) 
+            }).then(response => {
                 if(!response.ok) throw new Error("HTTP status " + response.status);
                 return response.json()
-            }).then(data => { console.log(data); location.reload();}).catch(err => {
+            }).then(data => { location.reload();}).catch(err => {
                 document.getElementById('upload-error').style.display = 'block';
             });
             return;
