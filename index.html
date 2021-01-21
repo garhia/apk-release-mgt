@@ -55,13 +55,13 @@
                     <form>
                         <label>Title</label> <br />
                         <input id="apk-title" type="text" name="title" required /><br />
-                        <label>APK</label><br />
-                        <input id="apk_file" type="file" name="apk_file" required /><br />
+                        <label>APK link</label><br />
+                        <input id="link" type="text" name="link" required /><br />
                         <label> Bug Document Link</label><br />
                         <input id="bugsLink" type="text" name="bugsLink" required /><br />
                         <label> Tested Document Link</label><br />
                         <input id="testLink" type="text" name="testedLink" required /><br />
-                        <button onclick="submitApk()" type="button">Submit</button>
+                        <button onclick="submitApk()" type="button" class="submit-btn">Submit</button>
                     </form>
                 </div>
             </div>
@@ -123,17 +123,14 @@
 
         const submitApk = (e) => {
             const title = document.getElementById('apk-title').value;
-            const apkfile = document.getElementById('apk_file').files[0];
+            const link = document.getElementById('link').value;
             const bugslink = document.getElementById('bugsLink').value;
             const testedlink = document.getElementById('testLink').value;
 
-            const formData = new FormData();
-            formData.append('title', title);
-            formData.append('apk_file', apkfile);
-            formData.append('bugsLink', bugslink);
-            formData.append('testedLink', testedlink);
-            formData.append('appType', appType);
-            fetch('https://garhia-apk.herokuapp.com/apk', { method: "POST", body: formData }).then(response => {
+            const body = {
+                title, bugslink, testedlink, link,
+            }
+            fetch('https://garhia-apk.herokuapp.com/apk', { method: "POST", body: JSON.stringify(body) }).then(response => {
                 if(!response.ok) throw new Error("HTTP status " + response.status);
                 return response.json()
             }).then(data => { console.log(data); location.reload();}).catch(err => {

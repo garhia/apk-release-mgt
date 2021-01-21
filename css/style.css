@@ -13,6 +13,25 @@ body{
     color: gray;
 }
 
+.submit-btn {
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: #888;
+    color: white;
+    float: right;
+    font-size: 15px;
+}
+
+input {
+    border-radius: 5px;
+    height: 45px;
+    width: 100%;
+    margin-top: 5pxl;
+    margin-bottom: 10px;
+    border: 1px solid gray;
+}
+
 #upload-error{
     display: none;
     color: red;
@@ -175,6 +194,7 @@ h3 {
   .inner-content{
       width: 70%;
       margin: 0 auto;
+      overflow: auto;
   }
   
   /* The Close Button */
