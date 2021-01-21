@@ -9,6 +9,15 @@ body{
     background-size: 100% 100%;
     min-height: 100vh; 
 }
+#apps{
+    color: gray;
+}
+
+#upload-error{
+    display: none;
+    color: red;
+}
+
 .main-display{
     display: none;
 }
@@ -66,13 +75,16 @@ h3 {
     position: relative;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
+    padding: 20px;
+    background-color: #1ecbe1;
     width: 400px;
     height: 300px;
+    font-size: 15px;
 }
 
 .apk-download-btn {
     cursor: pointer;
-    height: 70px;
+    height: 40px;
     color: green;
 }
 
@@ -93,10 +105,10 @@ h3 {
 .add-btn {
     border: none;
     position: fixed;
-    height: 40px;
-    width: 40px;
+    height: 60px;
+    width: 60px;
     right: 20px;
-    bottom: 10px;
+    bottom: 15px;
     cursor: pointer;
 }
 
@@ -108,24 +120,24 @@ h3 {
 
 .move-up {
     position: absolute;
-    background-image: url('../images/up.svg');
     top: 0;
-    right: -30px;
-    width: 30px;
-    height: 30px;
+    right: -36px;
+    width: 40px;
+    height: 40px;
     border: none;
+    border-radius: 15px;
     padding: 5px;
+    font-size: 18px;
     cursor: pointer;
     color: green;
 }
 
 .search {
     position: absolute;
-    background-image: url('../images/search.svg');
     top: 40px;
-    right: -30px;
-    width: 30px;
-    height: 30px;
+    right: -36px;
+    width: 40px;
+    height: 40px;
     border: none;
     padding: 5px;
     cursor: pointer;
@@ -157,7 +169,12 @@ h3 {
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 40%; /* Could be more or less, depending on screen size */
+  }
+
+  .inner-content{
+      width: 70%;
+      margin: 0 auto;
   }
   
   /* The Close Button */
