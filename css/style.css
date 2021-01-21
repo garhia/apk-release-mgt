@@ -13,7 +13,12 @@ body{
     color: gray;
 }
 
+.app-cont {
+    margin-bottom: 50px;
+}
+
 .submit-btn {
+    cursor: pointer;
     padding: 15px;
     border: none;
     border-radius: 10px;
@@ -21,6 +26,9 @@ body{
     color: white;
     float: right;
     font-size: 15px;
+}
+.submit-btn:active{
+    padding: 13px;
 }
 
 input {
