@@ -85,6 +85,7 @@
             window.onclick = function (event) {
                 if (event.target == modal) {
                     document.getElementById('upload-error').style.display = 'none';
+                    document.getElementById('upload-error').innerHTML= ' Error uploading APK.';
                     modal.style.display = "none";
                 }
             }
@@ -130,14 +131,21 @@
             const body = {
                 title, bugsLink, testedLink, link, appType,
             }
+            let resultStatus = false;
             fetch('https://garhia-apk.herokuapp.com/apk', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body) 
             }).then(response => {
-                if(!response.ok) throw new Error("HTTP status " + response.status);
+                if(response.ok) resultStatus = true;
                 return response.json()
-            }).then(data => { location.reload();}).catch(err => {
+            }).then(data => {
+                if(resultStatus) location.reload();
+                let error = '';
+                data.forEach(err => error += err + '<br />');
+                document.getElementById('upload-error').style.display = 'block';
+                document.getElementById('upload-error').innerHTML = error;
+            }).catch(err => {
                 document.getElementById('upload-error').style.display = 'block';
             });
             return;
